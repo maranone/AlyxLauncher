@@ -1,0 +1,1 @@
+"C:\Program Files (x86)\Steam\steamapps\common\Half-Life Alyx\game\bin\win64\hlvr.exe" -console –vconsole +map a4_c17_water_tower -language english +hlvr_continuous_normal_speed 120 +hlvr_continuous_combat_speed 120
