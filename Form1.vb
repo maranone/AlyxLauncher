@@ -1,12 +1,14 @@
 ﻿Imports System
 Imports System.IO
+Imports System.Windows.Forms
+
 Public Class Form1
     Dim didi As String
     Dim dimap As String
     Dim difolder As String
     Dim config_file As String
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        If FolderBrowserDialog1.ShowDialog() = DialogResult.OK Then
+        If FolderBrowserDialog1.ShowDialog() = MyBase.DialogResult.OK Then
             didi = FolderBrowserDialog1.SelectedPath & "\steamapps\common\Half-Life Alyx\game\hlvr\maps"
             difolder = FolderBrowserDialog1.SelectedPath
             Dim di As DirectoryInfo = New DirectoryInfo(didi)
@@ -33,6 +35,7 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
+        AllowDrop = True
         Button2.Enabled = False
         CheckBox1.Checked = True
         CheckBox2.Checked = True
@@ -85,4 +88,29 @@ Public Class Form1
         Shell(".\AlyxLauncher.bat", vbNormalFocus)
     End Sub
 
+    Private Sub Form1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles Me.DragDrop
+        Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
+        Dim pathext As String
+        Dim pathsplit As Array
+        For Each path In files
+            If System.IO.File.Exists(path) = True Then
+                pathext = path.Substring(path.Length - 3, 3)
+                pathsplit = Split(path, "\")
+                If UCase(pathext) = "VPK" Then
+                    'MsgBox(pathsplit(UBound(pathsplit)))
+                    System.IO.File.Copy(path, didi & "\" & pathsplit(UBound(pathsplit)), True)
+                    MessageBox.Show(pathsplit(UBound(pathsplit)) & " File Copied, resetting the file list")
+                End If
+            End If
+        Next
+        Me.Controls.Clear() 'removes all the controls on the form
+        InitializeComponent() 'load all the controls again
+        Form1_Load(e, e)
+    End Sub
+
+    Private Sub Form1_DragEnter(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles Me.DragEnter
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            e.Effect = DragDropEffects.Copy
+        End If
+    End Sub
 End Class
