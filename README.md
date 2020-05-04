@@ -5,5 +5,4 @@ Alyx Map Launcher with console commands.
 - Checkboxes to activate custom command lines
 - Added console commands "-console –vconsole"
 
-source:
-https://github.com/maranone/AlyxLauncher-2
+- Created release as suggested. Thank you Steren.
